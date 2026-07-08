@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demander un devis — Promsy Peinture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rouge: #C41E2A;
+    --rouge-fonce: #7E1119;
+    --rouge-clair: #F2D9D6;
+    --noir: #1B1917;
+    --creme: #F6F2EC;
+    --blanc: #FFFFFF;
+    --ardoise: #6E6A63;
+    --vert: #2E7D46;
+    --vert-clair: #DCEFE1;
+    --display: 'Bricolage Grotesque', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: var(--body);
+    color: var(--noir);
+    background: var(--creme);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  section{position:relative;}
+  .wrap{ max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    display:flex; align-items:center; gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{ content:""; width: 22px; height: 2px; background: var(--rouge); display:inline-block; }
+  h1,h2,h3{ font-family: var(--display); font-weight: 700; letter-spacing: -0.01em; line-height: 1.04; }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position: sticky; top:0; z-index: 100;
+    background: rgba(246,242,236,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(27,25,23,0.08);
+  }
+  .nav{ max-width:1160px; margin:0 auto; padding: 16px 32px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-word{ font-family: var(--display); font-weight: 800; font-size: 19px; letter-spacing: -0.02em; }
+  .brand-word span{ color: var(--rouge); }
+  .nav-links{ display:flex; gap:34px; align-items:center; }
+  .nav-links a{ font-size: 14.5px; font-weight: 500; color: var(--noir); position:relative; padding: 4px 0; }
+  .nav-links a::after{ content:""; position:absolute; left:0; bottom:0; width:0; height:2px; background: var(--rouge); transition: width .25s ease; }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-links a.active{ color: var(--rouge); }
+  .nav-links a.active::after{ width:100%; }
+  .btn{
+    font-family: var(--body); font-weight: 600; font-size: 14px;
+    padding: 11px 22px; border-radius: 3px; display:inline-block; cursor:pointer; border: none;
+  }
+  .btn-primary{
+    background: var(--rouge); color: var(--blanc);
+    box-shadow: 3px 3px 0 var(--noir);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{ transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--noir); }
+  .btn-primary:disabled{ opacity:.6; cursor:not-allowed; }
+  .btn-ghost{ border: 1.5px solid var(--noir); color: var(--noir); background: transparent; }
+  .btn-ghost:hover{ background: var(--noir); color: var(--blanc); }
+  .nav .btn{ font-size:13.5px; padding: 9px 18px; }
+  @media (max-width: 860px){ .nav-links{ display:none; } }
+
+  /* ---------- PAGE HERO ---------- */
+  .page-hero{ padding: 72px 0 40px; }
+  .page-hero h1{ font-size: clamp(34px, 5vw, 52px); max-width: 720px; margin-bottom: 16px; }
+  .page-hero p.lead{ font-size: 17px; color: var(--ardoise); max-width: 560px; }
+
+  svg.brush-divider{ width:100%; height:46px; display:block; }
+  svg.brush-divider path{ fill: var(--noir); }
+
+  /* ---------- FORM LAYOUT ---------- */
+  .devis-section{ padding: 20px 0 100px; }
+  .devis-grid{ display:grid; grid-template-columns: 1fr 340px; gap: 48px; align-items:start; }
+
+  .form-card{
+    background: var(--blanc);
+    border: 1px solid rgba(27,25,23,0.1);
+    border-radius: 8px;
+    padding: 40px;
+  }
+  .step-label{
+    font-family: var(--mono); font-size: 11px; text-transform:uppercase;
+    letter-spacing: .07em; color: var(--rouge); margin-bottom: 6px; display:block;
+  }
+  .form-card h2{ font-size: 24px; margin-bottom: 30px; }
+
+  fieldset{ border:none; margin-bottom: 34px; }
+  fieldset legend{
+    font-family: var(--display); font-weight: 700; font-size: 16px;
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 1px solid rgba(27,25,23,0.1);
+    width: 100%;
+  }
+  .field-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .field{ display:flex; flex-direction:column; gap: 7px; }
+  .field.full{ grid-column: 1 / -1; }
+  .field label{ font-size: 13.5px; font-weight: 600; }
+  .field .optional{ font-weight:400; color: var(--ardoise); font-size:12px; }
+  .field input[type=text],
+  .field input[type=email],
+  .field input[type=tel],
+  .field select,
+  .field textarea{
+    font-family: var(--body);
+    font-size: 14.5px;
+    padding: 11px 13px;
+    border: 1.5px solid rgba(27,25,23,0.18);
+    border-radius: 4px;
+    background: var(--creme);
+    color: var(--noir);
+    outline: none;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    border-color: var(--rouge);
+    background: var(--blanc);
+  }
+  .field textarea{ resize: vertical; min-height: 110px; font-family: var(--body); }
+
+  .chip-group{ display:flex; flex-wrap:wrap; gap: 10px; }
+  .chip{
+    font-size: 13.5px; font-weight:500;
+    padding: 9px 16px;
+    border: 1.5px solid rgba(27,25,23,0.18);
+    border-radius: 30px;
+    cursor: pointer;
+    background: var(--creme);
+    user-select:none;
+    transition: all .15s ease;
+  }
+  .chip input{ display:none; }
+  .chip:has(input:checked){
+    background: var(--rouge);
+    border-color: var(--rouge);
+    color: var(--blanc);
+  }
+
+  .radio-group{ display:flex; gap: 14px; flex-wrap:wrap; }
+  .radio-pill{
+    display:flex; align-items:center; gap:8px;
+    font-size: 13.5px; font-weight:500;
+    padding: 10px 16px;
+    border: 1.5px solid rgba(27,25,23,0.18);
+    border-radius: 4px;
+    cursor:pointer;
+    flex: 1 1 140px;
+    background: var(--creme);
+    transition: all .15s ease;
+  }
+  .radio-pill:has(input:checked){
+    border-color: var(--rouge);
+    background: var(--rouge-clair);
+  }
+  .radio-pill input{ accent-color: var(--rouge); }
+
+  .consent{ display:flex; align-items:flex-start; gap: 10px; margin-bottom: 26px; }
+  .consent input{ margin-top: 3px; accent-color: var(--rouge); }
+  .consent label{ font-size: 13px; color: var(--ardoise); }
+
+  .submit-row{ display:flex; align-items:center; gap: 18px; flex-wrap:wrap; }
+  .submit-note{ font-size: 12.5px; color: var(--ardoise); }
+
+  /* success state */
+  .success-card{
+    display:none;
+    text-align:center;
+    padding: 60px 40px;
+  }
+  .success-card.show{ display:block; }
+  .form-card.hide{ display:none; }
+  .success-icon{
+    width: 70px; height:70px; border-radius:50%;
+    background: var(--vert-clair);
+    display:flex; align-items:center; justify-content:center;
+    margin: 0 auto 24px;
+  }
+  .success-card h2{ font-size: 26px; margin-bottom: 12px; }
+  .success-card p{ color: var(--ardoise); font-size: 15px; max-width: 420px; margin: 0 auto 28px; }
+
+  /* sidebar */
+  .aside-card{
+    background: var(--noir); color: var(--creme);
+    border-radius: 8px; padding: 32px 28px;
+    margin-bottom: 20px;
+  }
+  .aside-card h3{ color: var(--blanc); font-size: 17px; margin-bottom: 14px; }
+  .aside-card p{ color: #B7B2A8; font-size: 13.5px; margin-bottom: 18px; }
+  .mini-steps{ list-style:none; }
+  .mini-steps li{
+    display:flex; gap: 12px; align-items:flex-start;
+    font-size: 13.5px; color: #D8D4CC;
+    padding: 10px 0;
+    border-top: 1px solid #35322D;
+  }
+  .mini-steps li:first-child{ border-top:none; padding-top:0; }
+  .mini-steps .n{
+    flex: 0 0 auto;
+    font-family: var(--mono); font-size:11px; color: var(--rouge);
+    border: 1px solid var(--rouge); border-radius:50%;
+    width: 20px; height:20px; display:flex; align-items:center; justify-content:center;
+  }
+  .aside-contact{
+    background: var(--blanc); border: 1px solid rgba(27,25,23,0.1);
+    border-radius: 8px; padding: 28px;
+  }
+  .aside-contact h3{ font-size: 16px; margin-bottom: 14px; }
+  .aside-contact ul{ list-style:none; }
+  .aside-contact li{ font-size: 14px; color: var(--ardoise); padding: 8px 0; border-top: 1px dashed rgba(27,25,23,0.15); }
+  .aside-contact li:first-child{ border-top:none; }
+
+  @media (max-width: 980px){ .devis-grid{ grid-template-columns: 1fr; } }
+  @media (max-width: 640px){
+    .field-row{ grid-template-columns: 1fr; }
+    .form-card{ padding: 26px; }
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background: var(--noir); color: var(--creme); padding: 60px 0 30px; margin-top: 40px; }
+  .footer-grid{ display:grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; margin-bottom: 50px; }
+  footer h4{ font-family: var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.08em; color: #A19C92; margin-bottom: 16px; }
+  footer .brand-word{ color: var(--blanc); font-size: 20px; }
+  footer p{ color:#A19C92; font-size: 14px; margin-top: 12px; max-width: 280px;}
+  footer ul{ list-style:none; }
+  footer ul li{ margin-bottom: 10px; font-size: 14.5px; color:#D8D4CC; }
+  footer ul li a:hover{ color: var(--rouge); }
+  .footer-bottom{
+    border-top: 1px solid #35322D; padding-top: 22px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size: 12.5px; color:#7A766E; font-family: var(--mono);
+  }
+  @media (max-width: 780px){ .footer-grid{ grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="brand">
+      <svg width="38" height="38" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="21" fill="#C41E2A"/>
+        <path d="M13 30 C13 30 15 14 22 14 C29 14 31 30 31 30" stroke="#F6F2EC" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+        <path d="M22 14 L22 30" stroke="#F6F2EC" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="22" cy="9" r="2.6" fill="#F6F2EC"/>
+      </svg>
+      <span class="brand-word">Promsy<span> Peinture</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#histoire">Notre histoire</a>
+      <a href="valeurs.html">Valeurs</a>
+      <a href="prestations.html">Prestations</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <a href="devis.html" class="btn btn-primary">Demander un devis</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="eyebrow">Devis gratuit</div>
+      <h1>Décrivez votre projet, on s'occupe du reste.</h1>
+      <p class="lead">Remplissez ce formulaire en quelques minutes. Cyril ou Élodie revient vers vous personnellement sous 48h ouvrées avec une estimation.</p>
+    </div>
+  </section>
+
+  <svg class="brush-divider" viewBox="0 0 1200 46" preserveAspectRatio="none"><path d="M0 20 C 150 5, 300 40, 460 22 C 620 4, 780 42, 940 20 C 1050 6, 1150 30, 1200 18 L1200 46 L0 46 Z"/></svg>
+
+  <section class="devis-section">
+    <div class="wrap devis-grid">
+
+      <!-- FORM -->
+      <div>
+        <form class="form-card" id="devisForm" novalidate>
+          <span class="step-label">Formulaire de demande</span>
+          <h2>Votre projet en détail</h2>
+
+          <fieldset>
+            <legend>Vos coordonnées</legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" required autocomplete="given-name">
+              </div>
+              <div class="field">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" required autocomplete="family-name">
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+              </div>
+              <div class="field">
+                <label for="telephone">Téléphone</label>
+                <input type="tel" id="telephone" name="telephone" required autocomplete="tel" placeholder="06 00 00 00 00">
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field full">
+                <label for="adresse">Adresse du chantier <span class="optional">(ville / code postal)</span></label>
+                <input type="text" id="adresse" name="adresse" placeholder="Ex : Paris 75011">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Type de bien</legend>
+            <div class="radio-group">
+              <label class="radio-pill"><input type="radio" name="typeBien" value="appartement" checked> Appartement</label>
+              <label class="radio-pill"><input type="radio" name="typeBien" value="maison"> Maison</label>
+              <label class="radio-pill"><input type="radio" name="typeBien" value="local"> Local professionnel</label>
+              <label class="radio-pill"><input type="radio" name="typeBien" value="autre"> Autre</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Prestation(s) souhaitée(s)</legend>
+            <div class="chip-group">
+              <label class="chip"><input type="checkbox" name="prestation" value="Peinture intérieure">Peinture intérieure</label>
+              <label class="chip"><input type="checkbox" name="prestation" value="Peinture extérieure / façade">Peinture extérieure / façade</label>
+              <label class="chip"><input type="checkbox" name="prestation" value="Revêtements muraux">Revêtements muraux</label>
+              <label class="chip"><input type="checkbox" name="prestation" value="Rénovation / remise en état">Rénovation / remise en état</label>
+              <label class="chip"><input type="checkbox" name="prestation" value="Je ne sais pas encore">Je ne sais pas encore</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Surface &amp; délai</legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="surface">Surface approximative <span class="optional">(m²)</span></label>
+                <input type="text" id="surface" name="surface" placeholder="Ex : 45 m²">
+              </div>
+              <div class="field">
+                <label for="delai">Délai souhaité</label>
+                <select id="delai" name="delai">
+                  <option value="Dès que possible">Dès que possible</option>
+                  <option value="Dans le mois">Dans le mois</option>
+                  <option value="Dans les 3 mois">Dans les 3 mois</option>
+                  <option value="Pas encore défini">Pas encore défini</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Votre message</legend>
+            <div class="field-row">
+              <div class="field full">
+                <label for="message">Décrivez votre projet <span class="optional">(optionnel)</span></label>
+                <textarea id="message" name="message" placeholder="Ex : deux chambres et un salon à repeindre, murs actuellement en mauvais état..."></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="consent">
+            <input type="checkbox" id="consent" name="consent" required>
+            <label for="consent">J'accepte d'être recontacté(e) par Promsy Peinture au sujet de ma demande de devis.</label>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="btn btn-primary">Envoyer ma demande de devis</button>
+            <span class="submit-note">Réponse sous 48h ouvrées · Gratuit et sans engagement</span>
+          </div>
+        </form>
+
+        <div class="form-card success-card" id="successCard">
+          <div class="success-icon">
+            <svg width="30" height="30" viewBox="0 0 30 30"><path d="M6 15 L12 21 L24 8" stroke="#2E7D46" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h2>Merci, votre demande est enregistrée !</h2>
+          <p>Cyril ou Élodie vous recontacte personnellement sous 48h ouvrées pour affiner votre projet et vous proposer un devis gratuit.</p>
+          <a href="index.html" class="btn btn-ghost">Retour à l'accueil</a>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="aside-card">
+          <h3>Comment ça se passe ?</h3>
+          <p>Après votre envoi, voici les prochaines étapes.</p>
+          <ul class="mini-steps">
+            <li><span class="n">1</span> Nous étudions votre demande dans la journée.</li>
+            <li><span class="n">2</span> Cyril ou Élodie vous appelle pour affiner le besoin.</li>
+            <li><span class="n">3</span> Vous recevez un devis détaillé et gratuit.</li>
+            <li><span class="n">4</span> On planifie le chantier ensemble, à votre rythme.</li>
+          </ul>
+        </div>
+        <div class="aside-contact">
+          <h3>Vous préférez appeler ?</h3>
+          <ul>
+            <li>[téléphone à ajouter]</li>
+            <li>[email à ajouter]</li>
+            <li>[zone d'intervention]</li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <span class="brand-word">Promsy<span style="color:#C41E2A;"> Peinture</span></span>
+        <p>Entreprise familiale de peinture en bâtiment fondée en 2012 par Cyril et Élodie Promsy.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html#histoire">Notre histoire</a></li>
+          <li><a href="valeurs.html">Valeurs</a></li>
+          <li><a href="prestations.html">Prestations</a></li>
+          <li><a href="devis.html">Demander un devis</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>[téléphone à ajouter]</li>
+          <li>[email à ajouter]</li>
+          <li>[adresse / zone d'intervention]</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Promsy Peinture — Depuis 2012</span>
+      <span>Démo réalisée avec Claude</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const form = document.getElementById('devisForm');
+  const successCard = document.getElementById('successCard');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+    // Démo : pas de backend connecté. En production, on enverrait
+    // ces données à un serveur / une adresse e-mail ici.
+    const data = Object.fromEntries(new FormData(form).entries());
+    console.log('Demande de devis (démo, non envoyée) :', data);
+
+    form.classList.add('hide');
+    successCard.classList.add('show');
+    window.scrollTo({ top: successCard.offsetTop - 100, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
